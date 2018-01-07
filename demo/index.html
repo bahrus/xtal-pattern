@@ -10,7 +10,7 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../xtal-pattern.html">
+    <script src="../xtal-pattern.js"></script>
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -22,7 +22,8 @@
       <h3>Basic xtal-pattern demo</h3>
       <demo-snippet>
         <template>
-          <xtal-pattern></xtal-pattern>
+          <xtal-pattern href="my-component.html"></xtal-pattern>
+          <my-component entity="world"></my-component>
         </template>
       </demo-snippet>
     </div>
