@@ -49,11 +49,11 @@ If you want to fine tune the property definitions, the following format is recom
 
 ```html
 <xtal-pattern href="path/to/my-component.html"
-    prop-names        = " entityName    | entityID  | region    | transactions"
-    prop-types        = " String        | Number    | Object    | Array       "
-    prop-notify       = " false         | false     | false     | true        "
-    prop-readOnly     = " false         | false     | false     | true        "
-    prop-observer     = " onPropsChange |           |           |             "
+    prop-name         = " entityName        | entityID  | region    | transactions"
+    prop-type         = " String            | Number    | Object    | Array       "
+    prop-notify       = " false             | false     | false     | true        "
+    prop-readOnly     = " false             | false     | false     | true        "
+    prop-observer     = " 'onPropsChange'   |           |           |             "
 >
 ```
 
