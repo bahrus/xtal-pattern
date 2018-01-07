@@ -22,18 +22,24 @@
             fetch(this._href).then(resp => {
                 const scriptTag = document.createElement('script');
                 const className = this._fileName.replace('-', '_');
-                const propNames = this.getAttribute('prop-names').split('|')
+                const propNames = this.getAttribute('prop-names').split('|');
+                let propTypes = this.getAttribute('prop-types').split('|');
+                if(propTypes.length !== propNames.length) propTypes = null;
+                let counter = 0;
+                const props = propNames.map(propName =>{
+                    const returnObj = [propName + ':{'];
+                    if(propTypes) returnObj.push('\ntype: ' + propTypes[counter] + ',');
+                    returnObj.push('\n}')
+                    counter++;
+                    return returnObj.join('');
+                })
                 const js = `
                     (function () {
                         class ${className} extends Polymer.Element{
                             static get is(){return '${this._fileName}'}
                             static get properties(){
                                 return {
-                                                                    ${propNames.map(propName =>`
-                                    ${propName}:{
-                                        type: String
-                                    }
-                                                                    `)}
+                                    ${props.join()}
                                 }
                             }
                         }
