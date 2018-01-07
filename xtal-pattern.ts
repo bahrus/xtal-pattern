@@ -22,22 +22,26 @@
             fetch(this._href).then(resp => {
                 const scriptTag = document.createElement('script');
                 const className = this._fileName.replace('-', '_');
-                scriptTag.innerText = `
+                const propNames = this.getAttribute('prop-names').split('|')
+                const js = `
                     (function () {
                         class ${className} extends Polymer.Element{
                             static get is(){return '${this._fileName}'}
                             static get properties(){
                                 return {
-                                    entity: {
+                                                                    ${propNames.map(propName =>`
+                                    ${propName}:{
                                         type: String
                                     }
+                                                                    `)}
                                 }
                             }
                         }
                         customElements.define('${this._fileName}', ${className})
                     })();
                     `;
-
+                console.log(js);
+                scriptTag.innerText = js;
                 resp.text().then(markup => {
 
                     const domModule = document.createElement('dom-module');

@@ -64,7 +64,7 @@ In the markup above, we defined an observer, "onPropsChange."  Such observers, a
 ```html
 <script>
     function onPropsChange(){
-
+        this.doStuff();
     }
 </script>
 ```
