@@ -22,14 +22,18 @@ Step 2:
 To register this as a web component, use \<xtal-pattern\> in the containing component markup:
 
 ```html
-<xtal-pattern href="path/to/my-component.html"
-    prop-names="entity"
->
+<xtal-pattern href="path/to/my-component.html">
 ```
 
-xtal-pattern will autogenerate a Polymer web component with name "my-component."
+xtal-pattern will autogenerate a Polymer web component with name "my-component." It will look for tokens of the form:  [[xyz]], or [[!xyz]] or {{xyz}} or {{!xyz}} and automatically declare a property with that name.
 
-Note that references to images, etc, within my-component.html will all be relative to the base url of the web site / page open in the browser.
+To specify specific settings for the property, then for one instance of the property, use notation as follows:
+
+```html
+<div>{{entity::type:String;readOnly:true;observer:'onPropsChange'}}</div>
+```
+
+Note that references to images, etc, within my-component.html will all be relative to the base url of the web site / page open in the browser.  More on this topic later.
 
 Step 3.
 
@@ -43,19 +47,6 @@ Step 4.
 
 Wait for the world to say hi back.
 
-## Multiple properties, multiple settings
-
-If you want to fine tune the property definitions, the following format is recommended.  The number of tokens must match for each property description field.  Spaces are ignored, which allows the format to look like a table:
-
-```html
-<xtal-pattern href="path/to/my-component.html"
-    prop-name         = " entityName        | entityID  | region    | transactions"
-    prop-type         = " String            | Number    | Object    | Array       "
-    prop-notify       = " false             | false     | false     | true        "
-    prop-readOnly     = " false             | false     | false     | true        "
-    prop-observer     = " 'onPropsChange'   |           |           |             "
->
-```
 
 ## Custom JavaScript
 
@@ -65,6 +56,16 @@ In the markup above, we defined an observer, "onPropsChange."  Such observers, a
 <script>
     function onPropsChange(){
         this.doStuff();
+    }
+
+    function ready(){
+        super.ready();
+        ...
+    }
+
+    function connectedCallback(){
+        super.connectedCallback();
+        ...
     }
 </script>
 ```
