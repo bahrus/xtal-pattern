@@ -1,5 +1,5 @@
 (function () {
-    const regExp = /\{\{[a-zA-Z]+\}\}/g;
+    const regExp = /\{\{[^\{^\}]+\}\}/g;
     /**
     * `xtal-pattern`
     *
@@ -57,27 +57,20 @@
                         // const prop = {
                         //     type: String
                         // } as PropObjectType;
-                        const name = token.substr(2, token.length - 4);
+                        const stuffInsideBraces = token.substr(2, token.length - 4);
+                        const lhsRHS = stuffInsideBraces.split('|');
+                        console.log({
+                            lhsRHS: lhsRHS
+                        });
+                        const name = lhsRHS[0];
                         propDefinitions[name] = '';
                         cleansedMarkupTokens.push(token);
-                        console.log(regExpObj);
-                        console.log();
                         idx = regExpObj['index'] + token.length;
                     }
                     const props = [];
                     for (const key in propDefinitions) {
                         props.push(key + ': {type: String}');
                     }
-                    // const props = propDefinitions.map(propName => {
-                    //     const returnObj = [propName + ':{'];
-                    //     for (let key in propDef) {
-                    //         returnObj.push(`\n${key}: ${propDef[key][counter]},`)
-                    //     }
-                    //     // if(propTypes) returnObj.push('\ntype: ' + propTypes[counter] + ',');
-                    //     returnObj.push('\n}')
-                    //     counter++;
-                    //     return returnObj.join('');
-                    // })
                     const domModule = document.createElement('dom-module');
                     domModule.id = this._fileName;
                     domModule.innerHTML = `
