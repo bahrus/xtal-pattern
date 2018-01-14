@@ -50,10 +50,11 @@ Wait for the world to say hi back.
 
 ## Custom JavaScript
 
-In the markup above, we defined an observer, "onPropsChange."  Such observers, as well as computed properties and event handlers will need to be defined in the first script tag of the markup file:
+In the markup above, we defined an observer, "onPropsChange."  Such observers, as well as computed properties and event handlers will need to be defined in a script tag between //{ and //}:
 
 ```html
 <script>
+    //{
     function onPropsChange(){
         this.doStuff();
     }
@@ -67,6 +68,7 @@ In the markup above, we defined an observer, "onPropsChange."  Such observers, a
         super.connectedCallback();
         ...
     }
+    //}
 </script>
 ```
 
