@@ -61,7 +61,7 @@
                             propDefinitions[name] = '{' + lhsRHS[1] + '}';
                         }
                         
-                        cleansedMarkupTokens.push(token);
+                        cleansedMarkupTokens.push('{{' + name + '}}');
                         idx = regExpObj['index'] + token.length;
                     }
                     const props = [];
@@ -76,7 +76,7 @@
                             ${cleansedMarkupTokens.join('')}
                         </template>                    
                     `
-                    //console.log(domModule.innerHTML);
+                    console.log(domModule.innerHTML);
                     document.body.appendChild(domModule);
                     const js = `
                     (function () {
