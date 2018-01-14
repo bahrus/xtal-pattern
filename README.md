@@ -30,7 +30,7 @@ xtal-pattern will autogenerate a Polymer web component with name "my-component."
 To specify specific settings for the property, then for one instance of the property, use notation as follows:
 
 ```html
-<div>{{entity|type:String, readOnly, observer:'onPropsChange'}}</div>
+<div>{{entity|type:String, reflectToAttribute: true, observer:'onPropsChange'}}</div>
 ```
 
 Note that references to images, etc, within my-component.html will all be relative to the base url of the web site / page open in the browser.  

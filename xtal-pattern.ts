@@ -42,6 +42,7 @@
                     let idx = 0;
                     const propDefinitions: { [key: string]: string } = {};
                     const cleansedMarkupTokens: string[] = [];
+                    const propertiesAlreadyFullySet: {[key: string] : boolean} = {};
                     while ((regExpObj = regExp.exec(markup)) !== null) {
                         cleansedMarkupTokens.push(markup.substring(idx, regExpObj['index']));
                         //declare property
@@ -55,11 +56,15 @@
                             lhsRHS:lhsRHS
                         })
                         const name = lhsRHS[0];
-                        if(lhsRHS.length === 1){
-                            propDefinitions[name] = '{type:String}';
-                        }else{
-                            propDefinitions[name] = '{' + lhsRHS[1] + '}';
+                        if(!propertiesAlreadyFullySet[name]){
+                            if(lhsRHS.length === 1){
+                                propDefinitions[name] = '{type:String}';
+                            }else{
+                                propDefinitions[name] = '{' + lhsRHS[1] + '}';
+                                propertiesAlreadyFullySet[name] = true;
+                            }
                         }
+
                         
                         cleansedMarkupTokens.push('{{' + name + '}}');
                         idx = regExpObj['index'] + token.length;
