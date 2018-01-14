@@ -1,5 +1,8 @@
 (function () {
     const regExp = /\{\{[^\{^\}]+\}\}/g;
+    function replace(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
     /**
     * `xtal-pattern`
     *
@@ -21,8 +24,19 @@
             fetch(this._href).then(resp => {
                 const scriptTag = document.createElement('script');
                 const className = this._fileName.replace('-', '_');
-                resp.text().then(markup => {
-                    //const tokenized = regExp.exec(markup);
+                resp.text().then(contents => {
+                    let markup = contents;
+                    const iPosOfOpenScript = markup.indexOf('//{');
+                    let script = '';
+                    if (iPosOfOpenScript > -1) {
+                        const iPosOfClosedScript = markup.indexOf('//}');
+                        if (iPosOfClosedScript > -1) {
+                            script = markup.substring(iPosOfOpenScript + 3, iPosOfClosedScript);
+                            script = replace(script, 'function ', '');
+                            console.log(script);
+                            markup = markup.substr(0, iPosOfOpenScript) + markup.substr(iPosOfClosedScript + 3);
+                        }
+                    }
                     let regExpObj;
                     let idx = 0;
                     const propDefinitions = {};
@@ -59,12 +73,13 @@
                     }
                     const domModule = document.createElement('dom-module');
                     domModule.id = this._fileName;
-                    domModule.innerHTML = `
+                    const innerHTML = `
                         <template>
                             ${cleansedMarkupTokens.join('')}
                         </template>                    
                     `;
-                    console.log(domModule.innerHTML);
+                    console.log(innerHTML);
+                    domModule.innerHTML = innerHTML;
                     document.body.appendChild(domModule);
                     const js = `
                     (function () {
@@ -75,6 +90,7 @@
                                     ${props.join()}
                                 }
                             }
+                            ${script}
                         }
                         customElements.define('${this._fileName}', ${className})
                     })();
