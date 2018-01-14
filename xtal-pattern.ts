@@ -1,4 +1,17 @@
 (function () {
+
+    const regExp = /\{\{[a-zA-Z]+\}\}/g;
+    type PropConstructorType = StringConstructor | ObjectConstructor | BooleanConstructor | NumberConstructor | DateConstructor | ArrayConstructor;
+    interface PropObjectType {
+        type: PropConstructorType;
+        value?: boolean | number | string | Function | Object;
+        reflectToAttribute?: boolean;
+        readOnly?: boolean;
+        notify?: boolean;
+        computed?: string;
+        observer?: string;
+    }
+
     /** 
     * `xtal-pattern`
     *
@@ -22,30 +35,75 @@
             fetch(this._href).then(resp => {
                 const scriptTag = document.createElement('script');
                 const className = this._fileName.replace('-', '_');
-                const propNames = this.getAttribute('prop-name').split('|');
-                const propSettings = ['type', 'notify', 'read-only', 'observer'];
-                let propDef = {};
-                propSettings.forEach(setting =>{
-                    const propValuesAtr = this.getAttribute('prop-' + setting);
-                    if(!propValuesAtr) return;
-                    let propValues = propValuesAtr.split('|');
-                    if(propValues.length !== propNames.length) return;
-                    propDef[setting] = propValues;
-                })
+
+                //const propNames = this.getAttribute('prop-name').split('|');
+                //const propSettings = ['type', 'notify', 'read-only', 'observer'];
+                //let propDef = {};
+                // propSettings.forEach(setting =>{
+                //     const propValuesAtr = this.getAttribute('prop-' + setting);
+                //     if(!propValuesAtr) return;
+                //     let propValues = propValuesAtr.split('|');
+                //     if(propValues.length !== propNames.length) return;
+                //     propDef[setting] = propValues;
+                // })
                 //let propTypes = this.getAttribute('prop-type').split('|');
                 //if(propTypes.length !== propNames.length) propTypes = null;
-                let counter = 0;
-                const props = propNames.map(propName =>{
-                    const returnObj = [propName + ':{'];
-                    for(let key in propDef){
-                        returnObj.push(`\n${key}: ${propDef[key][counter]},`)
+                // let counter = 0;
+                // const props = propNames.map(propName =>{
+                //     const returnObj = [propName + ':{'];
+                //     for(let key in propDef){
+                //         returnObj.push(`\n${key}: ${propDef[key][counter]},`)
+                //     }
+                //     // if(propTypes) returnObj.push('\ntype: ' + propTypes[counter] + ',');
+                //     returnObj.push('\n}')
+                //     counter++;
+                //     return returnObj.join('');
+                // })
+
+                resp.text().then(markup => {
+                    //const tokenized = regExp.exec(markup);
+                    let regExpObj;
+                    let idx = 0;
+                    const propDefinitions: { [key: string]: string } = {};
+                    const cleansedMarkupTokens: string[] = [];
+                    while ((regExpObj = regExp.exec(markup)) !== null) {
+                        cleansedMarkupTokens.push(markup.substring(idx, regExpObj['index']));
+                        //declare property
+                        const token = regExpObj[0];
+                        // const prop = {
+                        //     type: String
+                        // } as PropObjectType;
+                        const name = token.substr(2, token.length - 4);
+                        propDefinitions[name] = '';
+                        cleansedMarkupTokens.push(token);
+                        console.log(regExpObj);
+                        console.log();
+                        idx = regExpObj['index'] + token.length;
                     }
-                    // if(propTypes) returnObj.push('\ntype: ' + propTypes[counter] + ',');
-                    returnObj.push('\n}')
-                    counter++;
-                    return returnObj.join('');
-                })
-                const js = `
+                    const props = [];
+                    for(const key in propDefinitions){
+                        props.push(key + ': {type: String}')
+                    }
+                    // const props = propDefinitions.map(propName => {
+                    //     const returnObj = [propName + ':{'];
+                    //     for (let key in propDef) {
+                    //         returnObj.push(`\n${key}: ${propDef[key][counter]},`)
+                    //     }
+                    //     // if(propTypes) returnObj.push('\ntype: ' + propTypes[counter] + ',');
+                    //     returnObj.push('\n}')
+                    //     counter++;
+                    //     return returnObj.join('');
+                    // })
+                    const domModule = document.createElement('dom-module');
+                    domModule.id = this._fileName;
+                    domModule.innerHTML = `
+                        <template>
+                            ${cleansedMarkupTokens.join('')}
+                        </template>                    
+                    `
+                    //console.log(domModule.innerHTML);
+                    document.body.appendChild(domModule);
+                    const js = `
                     (function () {
                         class ${className} extends Polymer.Element{
                             static get is(){return '${this._fileName}'}
@@ -58,18 +116,8 @@
                         customElements.define('${this._fileName}', ${className})
                     })();
                     `;
-                console.log(js);
-                scriptTag.innerText = js;
-                resp.text().then(markup => {
-
-                    const domModule = document.createElement('dom-module');
-                    domModule.id = this._fileName;
-                    domModule.innerHTML = `
-                        <template>
-                            ${markup}
-                        </template>                    
-                    `
-                    document.body.appendChild(domModule);
+                    console.log(js);
+                    scriptTag.innerText = js;
                     document.head.appendChild(scriptTag);
                 });
 

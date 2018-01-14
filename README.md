@@ -1,8 +1,8 @@
 # \<xtal-pattern\>
 
-Keep the Polymer &lt;3 vision alive
+\<xtal-pattern\> is a dependency free web component, though its mission is intimately tied with Polymer.  And what is that mission?  To create high level, application specific web components with as little fuss as possible.  In particular, webcomponents that are mostly markup, with very little script, compositions consisting of lower level web components glued together declaratively.
 
-\<xtal-pattern\> is a dependency free web component that allows you to define a (typically) Polymer based web component using an html file, without the help of HTML Imports.  As such, it won't be very effective at importing other resources based on relative paths.
+Although the current implementation is done using Polymer 2, the hope is that when Polymer 3 is released, this helper library will provide a nice counterpoint to the JavaScript-oriented direction Polymer 3 is moving towards.
 
 # Pure markup web component (no custom class definition)
 
@@ -14,7 +14,7 @@ Inside my-component.html, define some markup, for example:
 
 ```html
 <!-- Contents of my-component.html -->
-<div>Hello, [[entity]]</div>
+<div>Hello, {{entity}}</div>
 ```
 
 Step 2:
@@ -25,15 +25,15 @@ To register this as a web component, use \<xtal-pattern\> in the containing comp
 <xtal-pattern href="path/to/my-component.html">
 ```
 
-xtal-pattern will autogenerate a Polymer web component with name "my-component." It will look for tokens of the form:  [[xyz]], or [[!xyz]] or {{xyz}} or {{!xyz}} and automatically declare a property with that name.
+xtal-pattern will autogenerate a Polymer web component with name "my-component." It will look for tokens of the form:  {{xyz}} or {{!xyz}} and automatically declare a property with that name.
 
 To specify specific settings for the property, then for one instance of the property, use notation as follows:
 
 ```html
-<div>{{entity::type:String;readOnly:true;observer:'onPropsChange'}}</div>
+<div>{{entity:String, readOnly, observer:'onPropsChange'}}</div>
 ```
 
-Note that references to images, etc, within my-component.html will all be relative to the base url of the web site / page open in the browser.  More on this topic later.
+Note that references to images, etc, within my-component.html will all be relative to the base url of the web site / page open in the browser.  
 
 Step 3.
 
