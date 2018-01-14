@@ -1,6 +1,10 @@
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/bahrus/xtal-pattern)
+
 # \<xtal-pattern\>
 
 \<xtal-pattern\> is a dependency free web component, though its mission is intimately tied with Polymer.  And what is that mission?  To create high level, application specific web components with as little fuss as possible.  In particular, webcomponents that are mostly markup, with very little script, compositions consisting of lower level web components glued together declaratively.
+
+\<xtal-pattern\>, though it is markup centric, allows the javascript to be defined in the same file.
 
 Although the current implementation is done using Polymer 2, the hope is that when Polymer 3 is released, this helper library will provide a nice counterpoint to the JavaScript-oriented direction Polymer 3 is moving towards.
 
