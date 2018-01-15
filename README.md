@@ -4,6 +4,8 @@
 
 \<xtal-pattern\> is a dependency free web component, though its mission is intimately tied with Polymer.  And what is that mission?  To create high level, application specific web components with as little fuss as possible.  In particular, webcomponents that are mostly markup, with very little script, compositions consisting of lower level web components glued together declaratively.
 
+\<xtal-pattern\> weighs 930B minified and gzip'd.  
+
 \<xtal-pattern\>, though it is markup centric, allows the javascript to be defined in the same file.
 
 Although the current implementation is done using Polymer 2, the hope is that when Polymer 3 is released, this helper library will provide a nice counterpoint to the JavaScript-oriented direction Polymer 3 is moving towards.
@@ -29,9 +31,9 @@ To register this as a web component, use \<xtal-pattern\> in the containing comp
 <xtal-pattern href="path/to/my-component.html">
 ```
 
-xtal-pattern will autogenerate a Polymer web component with name "my-component." It will look for tokens of the form:  {{xyz}} or {{!xyz}} and automatically declare a property with that name.
+xtal-pattern will autogenerate a Polymer web component with name "my-component." It will look for tokens of the form:  {{xyz}}  automatically declare a property with that name.
 
-To specify specific settings for the property, then for one instance of the property, use notation as follows:
+To specify specific settings for the property, use notation as demmonstrated below:
 
 ```html
 <div>{{entity|type:String, reflectToAttribute: true, observer:'onPropsChange'}}</div>
