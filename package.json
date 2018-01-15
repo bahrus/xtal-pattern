@@ -29,7 +29,7 @@
     "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\""
   },
   "name": "xtal-pattern",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Create single file html Polymer web components without HTML Import",
   "main": "xtal-pattern.js",
   "repository": "https://github.com/bahrus/xtal-pattern",
