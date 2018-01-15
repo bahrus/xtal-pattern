@@ -1,4 +1,4 @@
-(function () {
+do {
     const regExp = /\{\{[^\{^\}]+\}\}/g;
     function replace(str, find, replace) {
         return str.replace(new RegExp(find, 'g'), replace);
@@ -60,6 +60,8 @@
                             cleansedMarkupTokens.push('{{' + name + '}}');
                             idx = regExpObj['index'] + token.length;
                         }
+                        if (cleansedMarkupTokens.length == 0)
+                            cleansedMarkupTokens.push(markup);
                         const props = [];
                         for (const key in propDefinitions) {
                             props.push(key + ': ' + propDefinitions[key]);
@@ -72,20 +74,7 @@
                         </template>                    
                     `;
                         document.body.appendChild(domModule);
-                        const js = `
-                    (function () {
-                        class ${className} extends Polymer.Element{
-                            static get is(){return '${this._fileName}'}
-                            static get properties(){
-                                return {
-                                    ${props.join()}
-                                }
-                            }
-                            ${script}
-                        }
-                        customElements.define('${this._fileName}', ${className})
-                    })();
-                    `;
+                        const js = `(function () {class ${className} extends Polymer.Element{static get is(){return '${this._fileName}'} static get properties(){return {${props.join()}}} ${script}} customElements.define('${this._fileName}', ${className}) })();`;
                         scriptTag.innerText = js;
                         document.head.appendChild(scriptTag);
                     });
@@ -102,5 +91,5 @@
         initXtalPattern();
     }
     WaitForPolymer();
-})();
+} while ('');
 //# sourceMappingURL=xtal-pattern.js.map
