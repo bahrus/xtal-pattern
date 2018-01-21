@@ -84,18 +84,16 @@ This, for now, is a bit of a research project.  Things are likely to change rapi
 5)  Be usable anywhere 
 
 
-======================================  TODO =========================================================
-
 ## Progressive enhancement
 
 xtal-pattern provides a number of tricks to minimize boot up time.
 
-1)  The core file for xtal-pattern begins working importing the content before the entirity of the code for the web component is downloaded.
+1)  The core file for xtal-pattern begins working importing the (default) content before the entiity of the code for the web component is downloaded.
 2)  The imported file can contain a section of "light children" to display while the web component loads.
 
 Why would we want to do this?
 
-Say you want to present a slide show "10 Lobotomies gone horribly wrong."  You want the initial, particularly gruisome slide, to display immediately, in order to invite the user to become engaged, while waiting for the supporting files (Polymer, other case studies, and the slide / carousel logic.)
+Say you want to present a slide show "10 Lobotomies gone horribly wrong."  You want the initial, particularly gruisome slide, to display immediately, in order to invite the user to become engaged, while waiting for the supporting files (e.g. Polymer, other case studies, and the slide / carousel logic) to download.
 
 So say the markup looks like this:
 

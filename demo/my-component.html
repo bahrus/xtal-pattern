@@ -1,7 +1,12 @@
 <div>Hello, {{entity|type:String, reflectToAttribute: true, observer:'onPropsChange'}}</div>
 <span></span>
-<div>Another entity {{entity}}</div>
-<slot>Good grief</slot>
+<div>Another entity [[entity]]</div>
+<slot>
+  <div>
+      Good grief
+      [[test]]
+  </div>
+</slot>
 <script>
   //{
   function onPropsChange(){

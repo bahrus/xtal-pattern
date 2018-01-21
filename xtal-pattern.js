@@ -32,6 +32,7 @@ customElements.define('xtal-pattern', class extends HTMLElement {
                     this.appendChild(wc);
                 }
                 link.style.display = 'none';
+                //TODO:  use dynamic import when polymer build supports it.
                 //import('./xtal-pattern-ext.js').then(module => {
                 module.process(this);
                 //});

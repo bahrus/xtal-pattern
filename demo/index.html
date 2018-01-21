@@ -7,10 +7,11 @@
     <title>xtal-pattern demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-
+    <script async type="module" src="../xtal-pattern.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/xtal-json-merge/build/ES6/json-merge.js"></script>
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <script type="module" src="../xtal-pattern.js"></script>
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -22,11 +23,46 @@
       <h3>Basic xtal-pattern demo</h3>
       <demo-snippet>
         <template>
-          <xtal-pattern>
-            <a href="my-component.html">Hi There</a>
-            <my-component entity="world"></my-component>
-          </xtal-pattern>
-          
+          iam here1
+          <dom-bind>
+            <template>
+                i am here 2
+                <json-merge pass-thru-on-init watch="{}" result="{{example1}}" delay="1000">
+                    <script type="application/json">
+                      [
+                        {
+                          "data": {
+                            "columns": [
+                              [
+                                "Bodak Yellow (Money Moves)",
+                                30,
+                                200,
+                                100,
+                                400,
+                                150,
+                                250
+                              ],
+                              [
+                                "Wild Thoughts",
+                                50,
+                                20,
+                                10,
+                                40,
+                                15,
+                                25
+                              ]
+                            ]
+                          }
+                        }
+                      ]
+                    </script>              
+                  </json-merge>
+                <xtal-pattern>
+                    <a href="my-component.html">Hi There</a>
+                    <my-component entity="world" test="[[example1]]"></my-component>
+                </xtal-pattern>
+            </template>
+          </dom-bind>
         </template>
       </demo-snippet>
     </div>

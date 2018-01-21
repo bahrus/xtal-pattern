@@ -36,6 +36,7 @@ import * as module from './xtal-pattern-ext.js';
                         this.appendChild(wc);
                     }
                     link.style.display = 'none';
+                    //TODO:  use dynamic import when polymer build supports it.
                     //import('./xtal-pattern-ext.js').then(module => {
                         module.process(this);
                     //});
