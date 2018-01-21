@@ -3,6 +3,7 @@
   "fragments": [],
   "sources": [
     "xtal-pattern.js",
+    "xtal-pattern-ext.js",
     "index.html"
   ],
   "extraDependencies": [

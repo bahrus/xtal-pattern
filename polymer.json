@@ -1,6 +1,7 @@
 {
   "sources":[
-    "xtal-pattern.js"
+    "xtal-pattern.js",
+    "xtal-pattern-ext.js"
   ],
   "lint": {
     "rules": [
