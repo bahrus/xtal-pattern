@@ -27,27 +27,35 @@ function processHTML(lhs: string, rhs: string, xtalPattern: any,
         }
     })
 }
+function replace(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
 export function process(xtalPattern: any) {
     const propDefinitions: { [key: string]: string } = {};
     const cleansedMarkupTokens: string[] = [];
     const propertiesAlreadyFullySet: { [key: string]: boolean } = {};
     processHTML('{{', '}}', xtalPattern, propDefinitions, cleansedMarkupTokens, propertiesAlreadyFullySet);
     processHTML('[[', ']]', xtalPattern, propDefinitions, cleansedMarkupTokens, propertiesAlreadyFullySet);
+    
+    const fn = xtalPattern._fn;
     const domModule = document.createElement('dom-module');
-    domModule.id = this._fileName;
+    domModule.id = fn;
     domModule.innerHTML = `<template>${cleansedMarkupTokens.join('')}</template>`;
     document.body.appendChild(domModule);
     const props = [];
     for (const key in propDefinitions) {
         props.push(key + ': ' + propDefinitions[key])
     }
-    const script = xtalPattern.sb(xtalPattern._c, '//{', '//}');
+    let script = xtalPattern.sb(xtalPattern._c, '//{', '//}')[1];
+    script = replace(script, 'function ', '');
     document.body.appendChild(domModule);
     const scriptTag = document.createElement('script');
-    const fn = xtalPattern._fn;
+    
     const className = fn.replace('-', '_');
     const js = `(function () {class ${className} extends Polymer.Element{static get is(){return '${fn}'} static get properties(){return {${props.join()}}} ${script}} customElements.define('${fn}', ${className}) })();`;
-    console.log(js);
+    // console.log({
+    //     js: js
+    // });
     scriptTag.innerText = js;
 
     document.head.appendChild(scriptTag);
