@@ -1,5 +1,6 @@
-function processHTML(lhs, rhs, xtalPattern, propDefinitions, cleansedMarkupTokens, propertiesAlreadyFullySet) {
+function processHTML(lhs, rhs, xtalPattern, propDefinitions, propertiesAlreadyFullySet) {
     const tokenized = xtalPattern.sb(xtalPattern._c, '{{', '}}');
+    const cleansedMarkupTokens = [];
     //console.log(tokenized);
     tokenized.forEach((token, idx) => {
         switch (idx % 2) {
@@ -22,20 +23,20 @@ function processHTML(lhs, rhs, xtalPattern, propDefinitions, cleansedMarkupToken
                 break;
         }
     });
+    xtalPattern._c = cleansedMarkupTokens.join('');
 }
 function replace(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 export function process(xtalPattern) {
     const propDefinitions = {};
-    const cleansedMarkupTokens = [];
     const propertiesAlreadyFullySet = {};
-    processHTML('{{', '}}', xtalPattern, propDefinitions, cleansedMarkupTokens, propertiesAlreadyFullySet);
-    processHTML('[[', ']]', xtalPattern, propDefinitions, cleansedMarkupTokens, propertiesAlreadyFullySet);
+    processHTML('{{', '}}', xtalPattern, propDefinitions, propertiesAlreadyFullySet);
+    processHTML('[[', ']]', xtalPattern, propDefinitions, propertiesAlreadyFullySet);
     const fn = xtalPattern._fn;
     const domModule = document.createElement('dom-module');
     domModule.id = fn;
-    domModule.innerHTML = `<template>${cleansedMarkupTokens.join('')}</template>`;
+    domModule.innerHTML = `<template>${xtalPattern._c}</template>`;
     document.body.appendChild(domModule);
     const props = [];
     for (const key in propDefinitions) {
