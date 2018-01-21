@@ -6,7 +6,7 @@ import * as module from './xtal-pattern-ext.js';
         _fn: string; //filename
         //_link: HTMLAnchorElement;
         _c: string; //content
-        sb(stringToSplit: string, lhs: string, rhs: string) {
+        sb(stringToSplit: string, lhs: string, rhs: string) { //split string between lhs and rhs delimiters
             const returnObj = [];
             stringToSplit.split(lhs).forEach((val, idx) => {
                 const rhsSplit = val.split(rhs).forEach(token => {
@@ -30,9 +30,10 @@ import * as module from './xtal-pattern-ext.js';
                     const slotContent = this.sb(content, "<slot>", "</slot>");
                     if (!this.querySelector(this._fn)) {
                         const wc = document.createElement(this._fn) as HTMLElement;
-                        if (slotContent.length > 0) {
-                            wc.innerHTML = slotContent[1];
+                        if(slotContent.length > 0){
+                            wc.innerHTML = slotContent[1]; //TODO:  accommodate multiple slot types
                         }
+                        
                         this.appendChild(wc);
                     }
                     link.style.display = 'none';

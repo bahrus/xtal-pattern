@@ -47,7 +47,7 @@ export function process(xtalPattern: any) {
         props.push(key + ': ' + propDefinitions[key])
     }
     const scriptSections = xtalPattern.sb(xtalPattern._c, '//{', '//}');
-    //debugger;
+    debugger;
     let script;
     if(scriptSections.length > 2){
         script = replace(scriptSections[1], 'function ', '');

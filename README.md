@@ -83,6 +83,7 @@ This, for now, is a bit of a research project.  Things are likely to change rapi
 4)  Low learning curve
 5)  Be usable anywhere 
 
+I'm pretty sure to achieve goal 1) above, it will require help on the server (puppeteer, maybe?).
 
 ## Progressive enhancement
 
@@ -98,10 +99,10 @@ Say you want to present a slide show "10 Lobotomies gone horribly wrong."  You w
 So say the markup looks like this:
 
 ```html
-    <xtal-pattern>
-        <a href="botched-lobotomies.html">10 Lobotomies Gone Horribly Wrong!!!</a>
-        <botched-lobotomies count="[[numberToShow]]"></botched-lobotomies>
-    </xtal-pattern>
+<xtal-pattern>
+    <a href="botched-lobotomies.html">10 Lobotomies Gone Horribly Wrong!!!</a>
+    <botched-lobotomies count="[[numberToShow]]"></botched-lobotomies>
+</xtal-pattern>
     
 ``` 
 

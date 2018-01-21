@@ -27,7 +27,7 @@ customElements.define('xtal-pattern', class extends HTMLElement {
                 if (!this.querySelector(this._fn)) {
                     const wc = document.createElement(this._fn);
                     if (slotContent.length > 0) {
-                        wc.innerHTML = slotContent[1];
+                        wc.innerHTML = slotContent[1]; //TODO:  accommodate multiple slot types
                     }
                     this.appendChild(wc);
                 }
