@@ -4,14 +4,9 @@ do {
         sb(stringToSplit, lhs, rhs) {
             const returnObj = [];
             stringToSplit.split(lhs).forEach((val, idx) => {
-                if (idx % 2 === 0) {
-                    returnObj.push(val);
-                }
-                else {
-                    const rhsSplit = val.split(rhs);
-                    returnObj.push(rhsSplit[0]);
-                    returnObj.push(rhsSplit.slice(1).join(rhs));
-                }
+                const rhsSplit = val.split(rhs).forEach(token => {
+                    returnObj.push(token);
+                });
             });
             return returnObj;
         }
@@ -36,6 +31,9 @@ do {
                         link.style.display = 'none';
                         this.appendChild(wc);
                     }
+                    import('./xtal-pattern-ext.js').then(module => {
+                        module.process(this);
+                    });
                 });
             });
         }
