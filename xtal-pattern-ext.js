@@ -1,5 +1,5 @@
 function processHTML(lhs, rhs, xtalPattern, propDefinitions, propertiesAlreadyFullySet) {
-    const tokenized = xtalPattern.sb(xtalPattern._c, '{{', '}}');
+    const tokenized = xtalPattern.sb(xtalPattern._c, lhs, rhs);
     const cleansedMarkupTokens = [];
     //console.log(tokenized);
     tokenized.forEach((token, idx) => {
@@ -34,16 +34,20 @@ export function process(xtalPattern) {
     processHTML('{{', '}}', xtalPattern, propDefinitions, propertiesAlreadyFullySet);
     processHTML('[[', ']]', xtalPattern, propDefinitions, propertiesAlreadyFullySet);
     const fn = xtalPattern._fn;
-    const domModule = document.createElement('dom-module');
-    domModule.id = fn;
-    domModule.innerHTML = `<template>${xtalPattern._c}</template>`;
-    document.body.appendChild(domModule);
     const props = [];
     for (const key in propDefinitions) {
         props.push(key + ': ' + propDefinitions[key]);
     }
-    let script = xtalPattern.sb(xtalPattern._c, '//{', '//}')[1];
-    script = replace(script, 'function ', '');
+    const scriptSections = xtalPattern.sb(xtalPattern._c, '//{', '//}');
+    //debugger;
+    let script;
+    if (scriptSections.length > 2) {
+        script = replace(scriptSections[1], 'function ', '');
+        xtalPattern._c = scriptSections[0] + scriptSections[2];
+    }
+    const domModule = document.createElement('dom-module');
+    domModule.id = fn;
+    domModule.innerHTML = `<template>${xtalPattern._c}</template>`;
     document.body.appendChild(domModule);
     const scriptTag = document.createElement('script');
     const className = fn.replace('-', '_');
