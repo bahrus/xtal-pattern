@@ -1,3 +1,4 @@
+//import * as module from './xtal-pattern-ext.js';
 do {
     //const tagName = 'xtal-pattern';
     customElements.define('xtal-pattern', class extends HTMLElement {
@@ -32,9 +33,9 @@ do {
                         if (slotContent.length > 0) {
                             wc.innerHTML = slotContent[1];
                         }
-                        link.style.display = 'none';
                         this.appendChild(wc);
                     }
+                    link.style.display = 'none';
                     import('./xtal-pattern-ext.js').then(module => {
                         module.process(this);
                     });

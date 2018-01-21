@@ -1,1 +1,42 @@
-customElements.define('xtal-pattern',function(a){function b(){return babelHelpers.classCallCheck(this,b),babelHelpers.possibleConstructorReturn(this,(b.__proto__||Object.getPrototypeOf(b)).apply(this,arguments))}return babelHelpers.inherits(b,a),babelHelpers.createClass(b,[{key:'sb',value:function(a,b,c){var d=[];return a.split(b).forEach(function(a,b){if(0===b%2)d.push(a);else{var e=a.split(c);d.push(e[0]),d.push(e.slice(1).join(c))}}),d}},{key:'connectedCallback',value:function(){var a=this,b=this.querySelector('a');if(!b)return void setTimeout(this.connectedCallback,50);var c=b.href,d=c.split('/'),e=d[d.length-1].replace('.html','');fetch(c).then(function(b){b.text().then(function(b){var c=a.sb(b,'<slot>','</slot>'),d=document.createElement(e);d.innerHTML=c[0]})})}}]),b}(HTMLElement));
+do {
+    //const tagName = 'xtal-pattern';
+    customElements.define('xtal-pattern', class extends HTMLElement {
+        sb(stringToSplit, lhs, rhs) {
+            const returnObj = [];
+            stringToSplit.split(lhs).forEach((val, idx) => {
+                const rhsSplit = val.split(rhs).forEach(token => {
+                    returnObj.push(token);
+                });
+            });
+            return returnObj;
+        }
+        connectedCallback() {
+            const link = this.querySelector('a');
+            if (!link) {
+                setTimeout(this.connectedCallback, 50);
+                return;
+            }
+            const href = link.href;
+            const splitPath = href.split('/');
+            this._fn = splitPath[splitPath.length - 1].replace('.html', '');
+            fetch(href).then(resp => {
+                resp.text().then(content => {
+                    this._c = content;
+                    const slotContent = this.sb(content, "<slot>", "</slot>");
+                    if (!this.querySelector(this._fn)) {
+                        const wc = document.createElement(this._fn);
+                        if (slotContent.length > 0) {
+                            wc.innerHTML = slotContent[1];
+                        }
+                        this.appendChild(wc);
+                    }
+                    link.style.display = 'none';
+                    import('./xtal-pattern-ext.js').then(module => {
+                        module.process(this);
+                    });
+                });
+            });
+        }
+    });
+} while ('');
+//# sourceMappingURL=xtal-pattern.js.map

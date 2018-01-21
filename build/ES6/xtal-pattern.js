@@ -1,1 +1,42 @@
-customElements.define('xtal-pattern',class extends HTMLElement{sb(a,b,c){const d=[];return a.split(b).forEach((a,b)=>{if(0===b%2)d.push(a);else{const b=a.split(c);d.push(b[0]),d.push(b.slice(1).join(c))}}),d}connectedCallback(){const a=this.querySelector('a');if(!a)return void setTimeout(this.connectedCallback,50);const b=a.href,c=b.split('/'),d=c[c.length-1].replace('.html','');fetch(b).then((a)=>{a.text().then((a)=>{const b=this.sb(a,'<slot>','</slot>'),c=document.createElement(d);c.innerHTML=b[0]})})}});
+do {
+    //const tagName = 'xtal-pattern';
+    customElements.define('xtal-pattern', class extends HTMLElement {
+        sb(stringToSplit, lhs, rhs) {
+            const returnObj = [];
+            stringToSplit.split(lhs).forEach((val, idx) => {
+                const rhsSplit = val.split(rhs).forEach(token => {
+                    returnObj.push(token);
+                });
+            });
+            return returnObj;
+        }
+        connectedCallback() {
+            const link = this.querySelector('a');
+            if (!link) {
+                setTimeout(this.connectedCallback, 50);
+                return;
+            }
+            const href = link.href;
+            const splitPath = href.split('/');
+            this._fn = splitPath[splitPath.length - 1].replace('.html', '');
+            fetch(href).then(resp => {
+                resp.text().then(content => {
+                    this._c = content;
+                    const slotContent = this.sb(content, "<slot>", "</slot>");
+                    if (!this.querySelector(this._fn)) {
+                        const wc = document.createElement(this._fn);
+                        if (slotContent.length > 0) {
+                            wc.innerHTML = slotContent[1];
+                        }
+                        this.appendChild(wc);
+                    }
+                    link.style.display = 'none';
+                    import('./xtal-pattern-ext.js').then(module => {
+                        module.process(this);
+                    });
+                });
+            });
+        }
+    });
+} while ('');
+//# sourceMappingURL=xtal-pattern.js.map
